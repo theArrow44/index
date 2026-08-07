@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G. M. IFTIKHAR MAHBUB — Architecture Portfolio</title>
+
+<!--
+  HOW TO EDIT THIS SITE
+  ======================
+  1. Your name / title: search for "G. M. IFTIKHAR MAHBUB" and "ARCHITECTURAL DESIGNER" near the top of <body>.
+  2. Project: the featured project lives in the <article class="sheet featured"> block inside #work.
+     Replace the title, meta line, description, and the title-block row (sheet no. / scale / date).
+     Swap the inline SVG for a real photo by replacing the <svg class="sheet-art">...</svg>
+     with <img src="your-photo.jpg" alt="...">  — keep the class="sheet-art" on it.
+     To add more projects back, duplicate the <article class="sheet"> block (drop the "featured"
+     class on the extras) and set .grid back to a multi-column layout in the CSS.
+  3. About section: replace the bio paragraph and the "spec sheet" list of skills/software.
+  4. Contact: replace the email, and the remaining link placeholder (CV PDF / LinkedIn). The
+     Facebook link is already set.
+  5. Colors and fonts are all defined once at the top of the <style> block under :root —
+     change them there and the whole site updates.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper: #F6F5F0;
+    --paper-dim: #EFEDE6;
+    --ink: #17181A;
+    --graphite: #6E706C;
+    --line: #D8D5CB;
+    --redline: #B3382B;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --ruler-w: 44px;
+    --edge: 1px solid var(--line);
+    --radius: 3px;
+    --shadow-sm: 0 1px 2px rgba(23,18,14,0.05);
+    --shadow-md: 0 10px 28px rgba(23,18,14,0.08);
+    --shadow-lg: 0 24px 56px rgba(23,18,14,0.12);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  body{
+    margin: 0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -8%, rgba(179,56,43,0.035), transparent 55%),
+      radial-gradient(ellipse 700px 500px at 100% 15%, rgba(23,24,26,0.025), transparent 60%),
+      var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    padding-left: var(--ruler-w);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection{ background: var(--ink); color: var(--paper); }
+
+  a{ color: inherit; }
+  img, svg{ display: block; max-width: 100%; }
+
+  :focus-visible{
+    outline: 2px solid var(--redline);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Entrance / reveal animation utilities ---------- */
+  @keyframes riseIn{
+    from{ opacity: 0; transform: translateY(16px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+  .reveal-in{
+    animation: riseIn .8s cubic-bezier(.16,.84,.44,1) both;
+  }
+  .reveal-in.d1{ animation-delay: .08s; }
+  .reveal-in.d2{ animation-delay: .16s; }
+  .reveal-in.d3{ animation-delay: .24s; }
+  .reveal-in.d4{ animation-delay: .32s; }
+  .reveal-in.d5{ animation-delay: .42s; }
+
+  .reveal-up{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal-up.in-view{ opacity: 1; transform: translateY(0); }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight: 600; margin: 0; }
+
+  .mono{ font-family: var(--font-mono); }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--graphite);
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .eyebrow::before{
+    content: '';
+    width: 16px;
+    height: 1px;
+    background: var(--redline);
+    flex-shrink: 0;
+  }
+
+  .wrap{ max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- Scale ruler (fixed left edge, doubles as scroll progress) ---------- */
+  .ruler{
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: var(--ruler-w);
+    border-right: var(--edge);
+    background: var(--paper-dim);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px 0;
+  }
+  .ruler-label{
+    writing-mode: vertical-rl;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--graphite);
+    margin-bottom: 14px;
+  }
+  .ruler-track{
+    position: relative;
+    flex: 1;
+    width: 1px;
+    background: var(--line);
+  }
+  .ruler-tick{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ruler-tick::before{
+    content:'';
+    width: 8px; height: 1px;
+    background: var(--graphite);
+  }
+  .ruler-tick span{
+    position: absolute;
+    left: 12px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--graphite);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .25s ease, color .25s ease;
+  }
+  .ruler-tick.active::before{ background: var(--redline); width: 14px; }
+  .ruler-tick.active span{ opacity: 1; color: var(--redline); }
+
+  /* ---------- Header ---------- */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(246,245,240,0.86);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: var(--edge);
+    box-shadow: 0 0 0 rgba(23,18,14,0);
+    transition: box-shadow .3s ease, background .3s ease;
+  }
+  header.scrolled{
+    background: rgba(246,245,240,0.96);
+    box-shadow: 0 6px 24px rgba(23,18,14,0.06);
+  }
+  .header-inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .brand{ display:flex; align-items: baseline; gap: 10px; }
+  .brand-mark{ font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 0.01em; }
+  .brand-sub{ font-family: var(--font-mono); font-size: 10px; color: var(--graphite); letter-spacing: 0.1em; }
+
+  nav ul{
+    list-style: none;
+    display: flex;
+    gap: 28px;
+    margin: 0; padding: 0;
+  }
+  nav a{
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--graphite);
+    position: relative;
+    padding-bottom: 3px;
+  }
+  nav a::after{
+    content:'';
+    position: absolute; left:0; right:0; bottom:0;
+    height: 1px; background: var(--redline);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .25s ease;
+  }
+  nav a:hover, nav a:focus-visible{ color: var(--ink); }
+  nav a:hover::after, nav a:focus-visible::after{ transform: scaleX(1); }
+
+  .nav-toggle{ display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 96px 0 88px;
+    border-bottom: var(--edge);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero .wrap{
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-eyebrow{ margin-bottom: 22px; }
+  .hero h1{
+    font-size: clamp(38px, 5.4vw, 68px);
+    line-height: 1.03;
+    letter-spacing: -0.01em;
+  }
+  .hero-role{
+    margin-top: 18px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--graphite);
+    letter-spacing: 0.04em;
+  }
+  .hero p.statement{
+    margin-top: 26px;
+    max-width: 46ch;
+    font-size: 17px;
+    color: #38393B;
+  }
+  .hero-actions{
+    margin-top: 34px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .btn{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.07em;
+    text-decoration: none;
+    padding: 13px 22px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    color: var(--ink);
+    display: inline-block;
+    transition: background .2s ease, color .2s ease, border-color .2s ease, transform .15s ease, box-shadow .25s ease;
+  }
+  .btn.solid{ background: var(--ink); color: var(--paper); box-shadow: var(--shadow-sm); }
+  .btn:hover{ background: var(--ink); color: var(--paper); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .btn.solid:hover{ background: var(--redline); border-color: var(--redline); }
+  .btn:active{ transform: translateY(0) scale(.97); box-shadow: var(--shadow-sm); }
+
+  .hero-art{ position: relative; }
+  .hero-art svg{ width: 100%; height: auto; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding: 88px 0; border-bottom: var(--edge); }
+  .section-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .section-head h2{ font-size: clamp(28px, 3.4vw, 40px); margin-top: 8px; }
+  .section-count{ font-family: var(--font-mono); font-size: 12px; color: var(--graphite); }
+
+  /* ---------- Work grid ---------- */
+  .grid{
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .sheet{
+    border: var(--edge);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: var(--shadow-sm);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .6s ease, box-shadow .35s ease;
+    overflow: hidden;
+  }
+  .sheet.in-view{ opacity: 1; transform: translateY(0); }
+  .sheet.in-view:hover{
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .sheet.featured{
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+  }
+  .sheet.featured .sheet-art{
+    aspect-ratio: auto;
+    height: 100%;
+    border-bottom: none;
+    border-right: var(--edge);
+  }
+  .sheet.featured .sheet-content{
+    display: flex;
+    flex-direction: column;
+  }
+  .sheet.featured .sheet-body{
+    flex: 1;
+    padding: 44px 44px 28px;
+  }
+  .sheet.featured .sheet-body h3{
+    font-size: clamp(26px, 2.6vw, 34px);
+  }
+  .sheet.featured .sheet-body p{
+    max-width: 46ch;
+    font-size: 15.5px;
+  }
+  .sheet.featured .title-block{ margin-top: auto; }
+
+  /* ---------- SVG "drawn line" reveal ---------- */
+  .draw-line line,
+  .draw-line polygon,
+  .draw-line rect,
+  .draw-line circle,
+  .draw-line path{
+    transition: stroke-dashoffset .9s cubic-bezier(.16,.84,.44,1);
+  }
+
+  .sheet-art{
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px) 0 0/24px 24px,
+      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0/24px 24px,
+      var(--paper-dim);
+    border-bottom: var(--edge);
+    position: relative;
+    overflow: hidden;
+  }
+  .sheet-art svg{ width: 100%; height: 100%; }
+
+  .redline-tag{
+    position: absolute;
+    top: 14px; right: 14px;
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--redline);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .redline-tag::before{
+    content:'';
+    width: 7px; height: 7px;
+    border: 1px solid var(--redline);
+    border-radius: 50%;
+  }
+  .sheet:hover .redline-tag, .sheet:focus-within .redline-tag{ opacity: 1; transform: translateY(0); }
+
+  .sheet-body{ padding: 22px 24px 0; }
+  .sheet-meta{
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--graphite);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .sheet-body h3{ font-size: 21px; margin-bottom: 10px; }
+  .sheet-body p{ color: #444547; font-size: 14.5px; margin: 0 0 22px; max-width: 42ch; }
+
+  .title-block{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: var(--edge);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+  }
+  .title-block div{
+    padding: 10px 12px;
+    border-right: var(--edge);
+  }
+  .title-block div:last-child{ border-right: none; }
+  .title-block .tb-label{
+    display: block;
+    color: var(--graphite);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 56px;
+  }
+  .portrait{
+    border: var(--edge);
+    aspect-ratio: 3/4;
+    background: var(--paper-dim);
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait svg{ width: 100%; height: 100%; }
+  .portrait{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .portrait.in-view{ opacity: 1; transform: translateY(0); }
+  .about-bio p{ font-size: 16px; color: #333436; max-width: 58ch; margin: 0 0 18px; }
+
+  .spec-sheet{ margin-top: 32px; border-top: var(--edge); }
+  .spec-row{
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: var(--edge);
+    padding: 14px 10px;
+    margin: 0 -10px;
+    gap: 16px;
+    border-radius: var(--radius);
+    transition: background .2s ease;
+  }
+  .spec-row:hover{ background: var(--paper-dim); }
+  .spec-row .spec-label{ font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--graphite); text-transform: uppercase; }
+  .spec-row .spec-value{ font-size: 14.5px; }
+
+  /* ---------- Contact ---------- */
+  #contact{ border-bottom: none; }
+  .stamp{
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+    background: var(--paper);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow .3s ease;
+  }
+  .stamp:hover{ box-shadow: var(--shadow-lg); }
+  .stamp h2{ font-size: clamp(30px, 4vw, 46px); max-width: 14ch; }
+  .stamp p{ margin-top: 16px; color: var(--graphite); font-family: var(--font-mono); font-size: 13px; }
+  .stamp-links{ display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+  .stamp-links a{
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, color .2s ease;
+  }
+  .stamp-links a:hover{ border-color: var(--redline); color: var(--redline); }
+  .compass{ width: 70px; height: 70px; }
+
+  footer{
+    padding: 22px 32px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--graphite);
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px){
+    :root{ --ruler-w: 0px; }
+    .ruler{ display: none; }
+    body{ padding-left: 0; }
+    .hero .wrap{ grid-template-columns: 1fr; }
+    .hero-art{ order: -1; }
+    .grid{ grid-template-columns: 1fr; }
+    .sheet.featured{ grid-template-columns: 1fr; }
+    .sheet.featured .sheet-art{ height: auto; aspect-ratio: 4/3; border-right: none; border-bottom: var(--edge); }
+    .sheet.featured .sheet-body{ padding: 30px 24px 0; }
+    .about-grid{ grid-template-columns: 1fr; }
+    .portrait{ max-width: 280px; }
+    .stamp{ grid-template-columns: 1fr; text-align: left; }
+    .stamp-links{ align-items: flex-start; }
+    nav ul{ display: none; }
+    nav ul.open{
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 62px; left: 0; right: 0;
+      background: var(--paper);
+      border-bottom: var(--edge);
+      padding: 18px 24px;
+      gap: 16px;
+    }
+    .nav-toggle{
+      display: block;
+      background: none;
+      border: 1px solid var(--ink);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Fixed scale ruler / scroll progress -->
+  <div class="ruler" aria-hidden="true">
+    <div class="ruler-label">SCALE 1:100</div>
+    <div class="ruler-track" id="rulerTrack">
+      <div class="ruler-tick" data-target="top" style="top:0%"><span>0.0</span></div>
+      <div class="ruler-tick" data-target="work" style="top:22%"><span>1.0 WORK</span></div>
+      <div class="ruler-tick" data-target="about" style="top:58%"><span>2.0 ABOUT</span></div>
+      <div class="ruler-tick" data-target="contact" style="top:88%"><span>3.0 CONTACT</span></div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">G. M. IFTIKHAR MAHBUB</span>
+        <span class="brand-sub">ARCHITECTURAL DESIGNER</span>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav">MENU</button>
+      <nav>
+        <ul id="primaryNav">
+          <li><a href="#work">A.01 WORK</a></li>
+          <li><a href="#about">A.02 ABOUT</a></li>
+          <li><a href="#contact">A.03 CONTACT</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="top">
+      <div class="wrap">
+        <div>
+          <div class="eyebrow hero-eyebrow reveal-in">PORTFOLIO — SET NO. 01 / 2026</div>
+          <h1 class="reveal-in d1">Buildings drawn<br>from the ground up.</h1>
+          <div class="hero-role reveal-in d2">M.ARCH CANDIDATE — RESIDENTIAL &amp; CIVIC WORK — BASED IN DHAKA</div>
+          <p class="statement reveal-in d3">
+            <!-- EDIT: your one or two sentence statement about your design approach -->
+            A collection of studio and independent projects exploring how light, material,
+            and structure shape everyday spaces — from a single house to a public library.
+          </p>
+          <div class="hero-actions reveal-in d4">
+            <a class="btn solid" href="#work">View the work</a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <div class="hero-art reveal-in d5">
+          <svg viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line drawing of an axonometric building volume over a drafting grid">
+            <defs>
+              <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#D8D5CB" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="480" height="420" fill="url(#grid)"/>
+            <!-- axonometric box -->
+            <g class="draw-line" fill="none" stroke="#17181A" stroke-width="1.6" stroke-linejoin="round">
+              <polygon points="120,260 240,200 360,260 240,320" />
+              <polygon points="120,260 120,140 240,80 240,200" />
+              <polygon points="240,200 240,80 360,140 360,260" />
+              <line x1="120" y1="140" x2="240" y2="80"/>
+              <line x1="240" y1="80" x2="360" y2="140"/>
+              <line x1="180" y1="110" x2="180" y2="230" stroke-dasharray="3 4"/>
+              <line x1="300" y1="110" x2="300" y2="230" stroke-dasharray="3 4"/>
+            </g>
+            <g stroke="#B3382B" stroke-width="1.2">
+              <line x1="240" y1="200" x2="240" y2="320"/>
+              <circle cx="240" cy="200" r="3" fill="#B3382B"/>
+            </g>
+            <text x="252" y="312" font-family="IBM Plex Mono, monospace" font-size="10" fill="#B3382B">H 2.4M</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WORK ================= -->
+    <section id="work">
+      <div class="wrap">
+        <div class="section-head reveal-up">
+          <div>
+            <div class="eyebrow">A.01 — SELECTED WORK</div>
+            <h2>Projects</h2>
+          </div>
+          <div class="section-count">FEATURED PROJECT</div>
+        </div>
+
+        <div class="grid">
+
+          <!-- Project 01 -->
+          <article class="sheet featured">
+            <div class="sheet-art">
+              <span class="redline-tag">FEATURED</span>
+              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Elevation line drawing of a mixed-use house with a gable roof">
+                <g class="draw-line" fill="none" stroke="#17181A" stroke-width="1.5">
+                  <polygon points="90,190 90,110 200,60 310,110 310,190"/>
+                  <line x1="90" y1="190" x2="310" y2="190"/>
+                  <line x1="130" y1="190" x2="130" y2="130"/>
+                  <line x1="130" y1="130" x2="200" y2="130"/>
+                  <line x1="200" y1="130" x2="200" y2="190"/>
+                  <rect x="230" y="150" width="40" height="40"/>
+                  <line x1="250" y1="150" x2="250" y2="190"/>
+                  <line x1="230" y1="170" x2="270" y2="170"/>
+                </g>
+              </svg>
+            </div>
+            <div class="sheet-content">
+              <div class="sheet-body">
+                <!-- EDIT: Project type — set to your actual category, e.g. Mixed-Use / Residential / Restaurant -->
+                <div class="sheet-meta">Mixed-Use — Ullpur, Gopalgonj, Bangladesh — 2026</div>
+                <h3>Gastro-Dwelling</h3>
+                <p>A mix of culinary and living space for a single family and their business.</p>
+              </div>
+              <div class="title-block">
+                <div><span class="tb-label">SHEET</span>A.101</div>
+                <div><span class="tb-label">SCALE</span>1/8&Prime;</div>
+                <div><span class="tb-label">DATE</span>2026</div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about">
+      <div class="wrap about-grid">
+        <div class="portrait">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line drawing placeholder portrait">
+            <rect width="300" height="400" fill="#EFEDE6"/>
+            <g class="draw-line" fill="none" stroke="#17181A" stroke-width="1.3">
+              <circle cx="150" cy="150" r="55"/>
+              <path d="M70,340 C70,260 110,220 150,220 C190,220 230,260 230,340"/>
+            </g>
+            <text x="150" y="380" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#6E706C">REPLACE WITH PORTRAIT</text>
+          </svg>
+        </div>
+        <div>
+          <div class="eyebrow reveal-up">A.02 — ABOUT</div>
+          <h2 class="reveal-up" style="margin-top:8px; font-size: clamp(28px,3.4vw,40px); transition-delay:.08s;">G. M. IFTIKHAR MAHBUB</h2>
+          <div class="about-bio reveal-up" style="margin-top:22px; transition-delay:.16s;">
+            <!-- EDIT: replace with your real bio, 2–3 short paragraphs -->
+            <p>I'm a final-year architecture student interested in how ordinary buildings — houses, libraries, small civic spaces — can be made with care on a modest budget. My work moves between hand drawing and model-making before it ever touches software.</p>
+            <p>Recent studio work has focused on adaptive reuse and daylight, alongside a year assisting on a residential project at a local practice.</p>
+          </div>
+          <div class="spec-sheet reveal-up" style="transition-delay:.24s;">
+            <div class="spec-row">
+              <div class="spec-label">Software</div>
+              <div class="spec-value">Rhino, AutoCAD, Revit, Adobe Suite, Sketchup, Lumion, Enscape, D5, Krita</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-label">Skills</div>
+              <div class="spec-value">Hand drafting, physical modelling, daylight studies</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-label">Education</div>
+              <div class="spec-value">B.Arch, Gopalganj Science and Technology University (GSTU), expected 2027</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-label">Awards</div>
+              <div class="spec-value">[Add any honours, competitions, or publications]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="eyebrow reveal-up" style="margin-bottom: 24px;">A.03 — CONTACT</div>
+        <div class="stamp reveal-up" style="transition-delay:.1s;">
+          <div>
+            <h2>Let's talk about a project.</h2>
+            <p><!-- EDIT: your email --> mahbubiftikhar@gmail.com — usually replies within a day</p>
+          </div>
+          <div class="stamp-links">
+            <!-- EDIT: replace remaining hrefs with your real links -->
+            <a href="#">Download CV (PDF)</a>
+            <a href="#">LinkedIn</a>
+            <a href="https://www.facebook.com/iftikhar.mahbub" target="_blank" rel="noopener">Facebook</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 G. M. IFTIKHAR MAHBUB</span>
+    <span>DRAWN IN HTML / CSS — DHAKA</span>
+  </footer>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const primaryNav = document.getElementById('primaryNav');
+  if(navToggle){
+    navToggle.addEventListener('click', () => {
+      const open = primaryNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
+    primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      primaryNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', false);
+    }));
+  }
+
+  // Reveal project sheets, section headers, and the portrait on scroll
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.sheet, .reveal-up, .portrait');
+  if(reduceMotion){
+    revealEls.forEach(s => s.classList.add('in-view'));
+  } else if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(s => io.observe(s));
+  } else {
+    revealEls.forEach(s => s.classList.add('in-view'));
+  }
+
+  // Draw-in animation for line-drawing SVGs (blueprint reveal)
+  // Skips any shape that already has an explicit stroke-dasharray (e.g. hidden-line
+  // conventions like the dashed stack marks) so that styling is preserved as-is.
+  function initDrawLines(){
+    const groups = document.querySelectorAll('.draw-line');
+    if(!groups.length) return;
+
+    if(reduceMotion){ return; } // leave lines fully drawn, no motion
+
+    groups.forEach((g, groupIndex) => {
+      const shapes = g.querySelectorAll('line, polygon, rect, circle, path');
+      const animatable = [];
+      shapes.forEach((el) => {
+        if(el.hasAttribute('stroke-dasharray')) return; // preserve intentional dashed lines
+        let len = 120;
+        try{
+          if(typeof el.getTotalLength === 'function'){
+            len = el.getTotalLength();
+          }
+        }catch(e){ /* fall back to default length */ }
+        el.style.strokeDasharray = String(len);
+        el.style.strokeDashoffset = String(len);
+        animatable.push(el);
+      });
+      animatable.forEach((el, i) => {
+        el.style.transitionDelay = (i * 70) + 'ms';
+      });
+      g.dataset.drawReady = '1';
+
+      if('IntersectionObserver' in window){
+        const target = g.closest('svg') || g;
+        const drawIO = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if(entry.isIntersecting){
+              animatable.forEach(el => { el.style.strokeDashoffset = '0'; });
+              drawIO.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        drawIO.observe(target);
+      } else {
+        animatable.forEach(el => { el.style.strokeDashoffset = '0'; });
+      }
+    });
+  }
+  window.addEventListener('load', initDrawLines);
+
+  // Ruler active tick — highlight based on which section is in view
+  const ticks = document.querySelectorAll('.ruler-tick');
+  const sectionMap = {
+    top: document.getElementById('top'),
+    work: document.getElementById('work'),
+    about: document.getElementById('about'),
+    contact: document.getElementById('contact')
+  };
+  const siteHeader = document.querySelector('header');
+  function updateRuler(){
+    const scrollPos = window.scrollY + window.innerHeight * 0.35;
+    let current = 'top';
+    Object.entries(sectionMap).forEach(([key, el]) => {
+      if(el && el.offsetTop <= scrollPos){ current = key; }
+    });
+    ticks.forEach(t => t.classList.toggle('active', t.dataset.target === current));
+    if(siteHeader){ siteHeader.classList.toggle('scrolled', window.scrollY > 8); }
+  }
+  document.addEventListener('scroll', updateRuler, { passive: true });
+  window.addEventListener('load', updateRuler);
+  window.addEventListener('resize', updateRuler);
+</script>
+</body>
+</html>
