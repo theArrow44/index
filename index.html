@@ -5,23 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>G. M. IFTIKHAR MAHBUB — Architecture Portfolio</title>
 
-<!--
-  HOW TO EDIT THIS SITE
-  ======================
-  1. Your name / title: search for "G. M. IFTIKHAR MAHBUB" and "ARCHITECTURAL DESIGNER" near the top of <body>.
-  2. Project: the featured project lives in the <article class="sheet featured"> block inside #work.
-     Replace the title, meta line, description, and the title-block row (sheet no. / scale / date).
-     Swap the inline SVG for a real photo by replacing the <svg class="sheet-art">...</svg>
-     with <img src="your-photo.jpg" alt="...">  — keep the class="sheet-art" on it.
-     To add more projects back, duplicate the <article class="sheet"> block (drop the "featured"
-     class on the extras) and set .grid back to a multi-column layout in the CSS.
-  3. About section: replace the bio paragraph and the "spec sheet" list of skills/software.
-  4. Contact: replace the email, and the remaining link placeholder (CV PDF / LinkedIn). The
-     Facebook link is already set.
-  5. Colors and fonts are all defined once at the top of the <style> block under :root —
-     change them there and the whole site updates.
--->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -76,7 +59,6 @@
     outline-offset: 3px;
   }
 
-  /* ---------- Entrance / reveal animation utilities ---------- */
   @keyframes riseIn{
     from{ opacity: 0; transform: translateY(16px); }
     to{ opacity: 1; transform: translateY(0); }
@@ -120,7 +102,6 @@
 
   .wrap{ max-width: 1180px; margin: 0 auto; padding: 0 32px; }
 
-  /* ---------- Scale ruler (fixed left edge, doubles as scroll progress) ---------- */
   .ruler{
     position: fixed;
     left: 0; top: 0; bottom: 0;
@@ -173,7 +154,6 @@
   .ruler-tick.active::before{ background: var(--redline); width: 14px; }
   .ruler-tick.active span{ opacity: 1; color: var(--redline); }
 
-  /* ---------- Header ---------- */
   header{
     position: sticky;
     top: 0;
@@ -228,7 +208,6 @@
 
   .nav-toggle{ display: none; }
 
-  /* ---------- Hero ---------- */
   .hero{
     padding: 96px 0 88px;
     border-bottom: var(--edge);
@@ -286,7 +265,6 @@
   .hero-art{ position: relative; }
   .hero-art svg{ width: 100%; height: auto; }
 
-  /* ---------- Section shell ---------- */
   section{ padding: 88px 0; border-bottom: var(--edge); }
   .section-head{
     display: flex;
@@ -299,7 +277,6 @@
   .section-head h2{ font-size: clamp(28px, 3.4vw, 40px); margin-top: 8px; }
   .section-count{ font-family: var(--font-mono); font-size: 12px; color: var(--graphite); }
 
-  /* ---------- Work grid ---------- */
   .grid{
     display: grid;
     grid-template-columns: 1fr;
@@ -347,7 +324,6 @@
   }
   .sheet.featured .title-block{ margin-top: auto; }
 
-  /* ---------- SVG "drawn line" reveal ---------- */
   .draw-line line,
   .draw-line polygon,
   .draw-line rect,
@@ -368,6 +344,31 @@
     overflow: hidden;
   }
   .sheet-art svg{ width: 100%; height: 100%; }
+  .sheet-art img{ width: 100%; height: 100%; object-fit: cover; }
+
+  .sheet-art.has-gallery{ cursor: pointer; }
+  .sheet-art.has-gallery:focus-visible{ outline-offset: -3px; }
+  .gallery-hint{
+    position: absolute;
+    bottom: 14px; left: 14px;
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    background: rgba(246,245,240,0.9);
+    border: var(--edge);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .sheet-art.has-gallery:hover .gallery-hint,
+  .sheet-art.has-gallery:focus-visible .gallery-hint{
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   .redline-tag{
     position: absolute;
@@ -420,7 +421,111 @@
     margin-bottom: 3px;
   }
 
-  /* ---------- About ---------- */
+  .lightbox{
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgba(23,24,26,0.92);
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  .lightbox.open{ display: flex; opacity: 1; }
+  .lightbox-inner{
+    position: relative;
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    transform: translateY(10px);
+    transition: transform .3s ease;
+  }
+  .lightbox.open .lightbox-inner{ transform: translateY(0); }
+  .lightbox-frame{
+    position: relative;
+    width: 100%;
+    border: 1px solid rgba(246,245,240,0.25);
+    background: #101012;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .lightbox-frame img{
+    width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    display: block;
+    background: #101012;
+  }
+  .lightbox-caption{
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    color: #C9C7BF;
+    text-align: center;
+  }
+  .lightbox-close{
+    position: absolute;
+    top: -46px; right: 0;
+    background: none;
+    border: 1px solid rgba(246,245,240,0.4);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .lightbox-close:hover{ background: rgba(246,245,240,0.1); border-color: var(--paper); }
+  .lightbox-nav{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(23,18,14,0.55);
+    border: 1px solid rgba(246,245,240,0.3);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .lightbox-nav:hover{ background: rgba(179,56,43,0.85); border-color: var(--redline); }
+  .lightbox-prev{ left: 14px; }
+  .lightbox-next{ right: 14px; }
+  .lightbox-count{
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: #8C8A82;
+  }
+  .lightbox-thumbs{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .lightbox-thumbs button{
+    width: 44px; height: 32px;
+    padding: 0;
+    border: 1px solid rgba(246,245,240,0.25);
+    border-radius: 2px;
+    background: #101012;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .lightbox-thumbs button.active{ border-color: var(--redline); }
+  .lightbox-thumbs img{ width: 100%; height: 100%; object-fit: cover; }
+
   .about-grid{
     display: grid;
     grid-template-columns: 0.8fr 1.2fr;
@@ -434,6 +539,7 @@
     overflow: hidden;
   }
   .portrait svg{ width: 100%; height: 100%; }
+  .portrait img{ width: 100%; height: 100%; object-fit: cover; }
   .portrait{
     opacity: 0;
     transform: translateY(18px);
@@ -457,7 +563,6 @@
   .spec-row .spec-label{ font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--graphite); text-transform: uppercase; }
   .spec-row .spec-value{ font-size: 14.5px; }
 
-  /* ---------- Contact ---------- */
   #contact{ border-bottom: none; }
   .stamp{
     border: 1px solid var(--ink);
@@ -496,7 +601,6 @@
     margin: 0 auto;
   }
 
-  /* ---------- Responsive ---------- */
   @media (max-width: 860px){
     :root{ --ruler-w: 0px; }
     .ruler{ display: none; }
@@ -531,12 +635,13 @@
       padding: 8px 12px;
       cursor: pointer;
     }
+    .lightbox{ padding: 20px; }
+    .lightbox-close{ top: -40px; }
   }
 </style>
 </head>
 <body>
 
-  <!-- Fixed scale ruler / scroll progress -->
   <div class="ruler" aria-hidden="true">
     <div class="ruler-label">SCALE 1:100</div>
     <div class="ruler-track" id="rulerTrack">
@@ -565,15 +670,13 @@
   </header>
 
   <main>
-    <!-- ================= HERO ================= -->
     <section class="hero" id="top">
       <div class="wrap">
         <div>
           <div class="eyebrow hero-eyebrow reveal-in">PORTFOLIO — SET NO. 01 / 2026</div>
           <h1 class="reveal-in d1">Buildings drawn<br>from the ground up.</h1>
-          <div class="hero-role reveal-in d2">B.Arch CANDIDATE — RESIDENTIAL &amp; CIVIC WORK — BASED IN BANGLADESH</div>
+          <div class="hero-role reveal-in d2">M.ARCH CANDIDATE — RESIDENTIAL &amp; CIVIC WORK — BASED IN DHAKA</div>
           <p class="statement reveal-in d3">
-            <!-- EDIT: your one or two sentence statement about your design approach -->
             A collection of studio and independent projects exploring how light, material,
             and structure shape everyday spaces — from a single house to a public library.
           </p>
@@ -590,7 +693,6 @@
               </pattern>
             </defs>
             <rect width="480" height="420" fill="url(#grid)"/>
-            <!-- axonometric box -->
             <g class="draw-line" fill="none" stroke="#17181A" stroke-width="1.6" stroke-linejoin="round">
               <polygon points="120,260 240,200 360,260 240,320" />
               <polygon points="120,260 120,140 240,80 240,200" />
@@ -610,7 +712,6 @@
       </div>
     </section>
 
-    <!-- ================= WORK ================= -->
     <section id="work">
       <div class="wrap">
         <div class="section-head reveal-up">
@@ -625,13 +726,20 @@
 
           <!-- Project 01 -->
           <article class="sheet featured">
-            <div class="sheet-art">
+            <!--
+              Click-to-open gallery: this box opens a lightbox showing every image
+              listed in the `project1Images` array near the bottom of the <script>
+              block. Your current photo (1.png) is already the first entry there —
+              add more images the same way to grow the gallery.
+            -->
+            <div class="sheet-art" id="project1Art" tabindex="0" role="button"
+                 aria-label="Open Gastro-Dwelling photo gallery">
               <span class="redline-tag">FEATURED</span>
-              <img src="1.png" alt="Gastro-Dwelling exterior view" style="width:100%; height:100%; object-fit:cover;">
+              <img src="1.png" alt="Gastro-Dwelling exterior view" id="project1Thumb">
+              <span class="gallery-hint" id="project1Hint">VIEW GALLERY →</span>
             </div>
             <div class="sheet-content">
               <div class="sheet-body">
-                <!-- EDIT: Project type — set to your actual category, e.g. Mixed-Use / Residential / Restaurant -->
                 <div class="sheet-meta">Mixed-Use — Ullpur, Gopalgonj, Bangladesh — 2026</div>
                 <h3>Gastro-Dwelling</h3>
                 <p>A mix of culinary and living space for a single family and their business.</p>
@@ -648,7 +756,6 @@
       </div>
     </section>
 
-    <!-- ================= ABOUT ================= -->
     <section id="about">
       <div class="wrap about-grid">
         <div class="portrait">
@@ -658,7 +765,6 @@
           <div class="eyebrow reveal-up">A.02 — ABOUT</div>
           <h2 class="reveal-up" style="margin-top:8px; font-size: clamp(28px,3.4vw,40px); transition-delay:.08s;">G. M. IFTIKHAR MAHBUB</h2>
           <div class="about-bio reveal-up" style="margin-top:22px; transition-delay:.16s;">
-            <!-- EDIT: replace with your real bio, 2–3 short paragraphs -->
             <p>I'm a final-year architecture student interested in how ordinary buildings — houses, libraries, small civic spaces — can be made with care on a modest budget. My work moves between hand drawing and model-making before it ever touches software.</p>
             <p>Recent studio work has focused on adaptive reuse and daylight, alongside a year assisting on a residential project at a local practice.</p>
           </div>
@@ -684,17 +790,15 @@
       </div>
     </section>
 
-    <!-- ================= CONTACT ================= -->
     <section id="contact">
       <div class="wrap">
         <div class="eyebrow reveal-up" style="margin-bottom: 24px;">A.03 — CONTACT</div>
         <div class="stamp reveal-up" style="transition-delay:.1s;">
           <div>
             <h2>Let's talk about a project.</h2>
-            <p><!-- EDIT: your email --> mahbubiftikhar@gmail.com — usually replies within a day</p>
+            <p>mahbubiftikhar@gmail.com — usually replies within a day</p>
           </div>
           <div class="stamp-links">
-            <!-- EDIT: replace remaining hrefs with your real links -->
             <a href="#">Download CV (PDF)</a>
             <a href="#">LinkedIn</a>
             <a href="https://www.facebook.com/iftikhar.mahbub" target="_blank" rel="noopener">Facebook</a>
@@ -708,6 +812,21 @@
     <span>© 2026 G. M. IFTIKHAR MAHBUB</span>
     <span>DRAWN IN HTML / CSS — DHAKA</span>
   </footer>
+
+  <!-- ================= LIGHTBOX (Project 01 gallery) ================= -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gastro-Dwelling photo gallery">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lightboxClose" type="button">CLOSE ✕</button>
+      <div class="lightbox-frame">
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous photo">‹</button>
+        <img id="lightboxImg" src="" alt="">
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next photo">›</button>
+      </div>
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+      <div class="lightbox-count" id="lightboxCount"></div>
+      <div class="lightbox-thumbs" id="lightboxThumbs"></div>
+    </div>
+  </div>
 
 <script>
   // Mobile nav toggle
@@ -724,7 +843,6 @@
     }));
   }
 
-  // Reveal project sheets, section headers, and the portrait on scroll
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const revealEls = document.querySelectorAll('.sheet, .reveal-up, .portrait');
   if(reduceMotion){
@@ -743,26 +861,22 @@
     revealEls.forEach(s => s.classList.add('in-view'));
   }
 
-  // Draw-in animation for line-drawing SVGs (blueprint reveal)
-  // Skips any shape that already has an explicit stroke-dasharray (e.g. hidden-line
-  // conventions like the dashed stack marks) so that styling is preserved as-is.
   function initDrawLines(){
     const groups = document.querySelectorAll('.draw-line');
     if(!groups.length) return;
-
-    if(reduceMotion){ return; } // leave lines fully drawn, no motion
+    if(reduceMotion){ return; }
 
     groups.forEach((g, groupIndex) => {
       const shapes = g.querySelectorAll('line, polygon, rect, circle, path');
       const animatable = [];
       shapes.forEach((el) => {
-        if(el.hasAttribute('stroke-dasharray')) return; // preserve intentional dashed lines
+        if(el.hasAttribute('stroke-dasharray')) return;
         let len = 120;
         try{
           if(typeof el.getTotalLength === 'function'){
             len = el.getTotalLength();
           }
-        }catch(e){ /* fall back to default length */ }
+        }catch(e){ }
         el.style.strokeDasharray = String(len);
         el.style.strokeDashoffset = String(len);
         animatable.push(el);
@@ -790,7 +904,6 @@
   }
   window.addEventListener('load', initDrawLines);
 
-  // Ruler active tick — highlight based on which section is in view
   const ticks = document.querySelectorAll('.ruler-tick');
   const sectionMap = {
     top: document.getElementById('top'),
@@ -811,6 +924,132 @@
   document.addEventListener('scroll', updateRuler, { passive: true });
   window.addEventListener('load', updateRuler);
   window.addEventListener('resize', updateRuler);
+
+  // ================= PROJECT 01 GALLERY =================
+  // EDIT THIS LIST to add more photos. Your current image (1.png) is already the
+  // first entry — add more lines below it in the same format with each new photo's
+  // filename. `caption` is optional; leave it as "" if you don't want text under
+  // a photo in the gallery view.
+  const project1Images = [
+    { src: "1.png", caption: "" },
+     { src: "Layer 2.png", caption: "" },
+     { src: "Layer 3.png", caption: "" },
+     { src: "Layer 4.png", caption: "" },
+     { src: "Layer 5.png", caption: "" },
+     { src: "Layer 6.png", caption: "" },
+     { src: "Layer 7.png", caption: "" },
+     { src: "Layer 8.png", caption: "" },
+     { src: "Layer 9.png", caption: "" },
+     { src: "Layer 10.png", caption: "" },
+     { src: "Layer 11.png", caption: "" },
+     { src: "Layer 12.png", caption: "" },
+     { src: "Layer 13.png", caption: "" },
+     { src: "Layer 14.png", caption: "" },
+     { src: "Layer 15.png", caption: "" },
+     { src: "Layer 16.png", caption: "" },
+     { src: "Layer 17.png", caption: "" },
+     { src: "iftikhar 2.1.png", caption: "" },
+  ];
+
+  (function setupProject1Gallery(){
+    const artBox = document.getElementById('project1Art');
+    const hint = document.getElementById('project1Hint');
+    const thumb = document.getElementById('project1Thumb');
+    if(!artBox) return;
+
+    if(!project1Images.length){
+      artBox.removeAttribute('role');
+      artBox.removeAttribute('tabindex');
+      if(hint) hint.style.display = 'none';
+      return;
+    }
+
+    artBox.classList.add('has-gallery');
+
+    if(thumb){
+      thumb.src = project1Images[0].src;
+      thumb.alt = project1Images[0].caption || thumb.alt;
+    }
+
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbCaption = document.getElementById('lightboxCaption');
+    const lbCount = document.getElementById('lightboxCount');
+    const lbThumbs = document.getElementById('lightboxThumbs');
+    const lbClose = document.getElementById('lightboxClose');
+    const lbPrev = document.getElementById('lightboxPrev');
+    const lbNext = document.getElementById('lightboxNext');
+
+    let current = 0;
+
+    function render(){
+      const item = project1Images[current];
+      lbImg.src = item.src;
+      lbImg.alt = item.caption || 'Gastro-Dwelling photo';
+      lbCaption.textContent = item.caption || '';
+      lbCount.textContent = (current + 1) + ' / ' + project1Images.length;
+      lbThumbs.querySelectorAll('button').forEach((b, i) => {
+        b.classList.toggle('active', i === current);
+      });
+    }
+
+    function buildThumbs(){
+      lbThumbs.innerHTML = '';
+      if(project1Images.length < 2) return;
+      project1Images.forEach((item, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Go to photo ' + (i + 1));
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = '';
+        b.appendChild(img);
+        b.addEventListener('click', () => { current = i; render(); });
+        lbThumbs.appendChild(b);
+      });
+    }
+
+    function openLightbox(index){
+      current = index || 0;
+      buildThumbs();
+      render();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      artBox.focus();
+    }
+
+    function step(delta){
+      current = (current + delta + project1Images.length) % project1Images.length;
+      render();
+    }
+
+    artBox.addEventListener('click', () => openLightbox(0));
+    artBox.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openLightbox(0);
+      }
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', () => step(-1));
+    lbNext.addEventListener('click', () => step(1));
+    lightbox.addEventListener('click', (e) => {
+      if(e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if(!lightbox.classList.contains('open')) return;
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowLeft') step(-1);
+      if(e.key === 'ArrowRight') step(1);
+    });
+  })();
 </script>
 </body>
 </html>
