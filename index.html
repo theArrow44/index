@@ -421,6 +421,107 @@
     margin-bottom: 3px;
   }
 
+  /* ============== PHOTOGRAPHY SLIDESHOW ============== */
+  .photo-section{ padding-top: 0; }
+  .slideshow{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    max-height: 640px;
+    border: var(--edge);
+    border-radius: var(--radius);
+    background: var(--paper-dim);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .6s ease, box-shadow .35s ease;
+  }
+  .slideshow.in-view{ opacity: 1; transform: translateY(0); }
+  .slideshow.in-view:hover{ box-shadow: var(--shadow-lg); }
+
+  .slide{
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .slide.active{ opacity: 1; z-index: 1; }
+  .slide img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .slide-caption{
+    position: absolute;
+    left: 16px; bottom: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--paper);
+    background: rgba(23,24,26,0.55);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    z-index: 2;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .slide-caption.show{ opacity: 1; }
+
+  .slideshow-counter{
+    position: absolute;
+    top: 14px; right: 14px;
+    z-index: 2;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    background: rgba(246,245,240,0.9);
+    border: var(--edge);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+  }
+
+  .slideshow-progress{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 2px;
+    background: rgba(23,24,26,0.12);
+    z-index: 2;
+  }
+  .slideshow-progress-bar{
+    height: 100%;
+    width: 0%;
+    background: var(--redline);
+  }
+  .slideshow-progress-bar.animate{
+    transition: width 4s linear;
+    width: 100%;
+  }
+
+  .slideshow-dots{
+    display: flex;
+    gap: 7px;
+    justify-content: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .slideshow-dots button{
+    width: 8px; height: 8px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--graphite);
+    background: transparent;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease, transform .2s ease;
+  }
+  .slideshow-dots button.active{
+    background: var(--redline);
+    border-color: var(--redline);
+    transform: scale(1.15);
+  }
+
   .lightbox{
     position: fixed;
     inset: 0;
@@ -611,6 +712,7 @@
     .sheet.featured{ grid-template-columns: 1fr; }
     .sheet.featured .sheet-art{ height: auto; aspect-ratio: 4/3; border-right: none; border-bottom: var(--edge); }
     .sheet.featured .sheet-body{ padding: 30px 24px 0; }
+    .slideshow{ aspect-ratio: 4/3; max-height: none; }
     .about-grid{ grid-template-columns: 1fr; }
     .portrait{ max-width: 280px; }
     .stamp{ grid-template-columns: 1fr; text-align: left; }
@@ -646,9 +748,10 @@
     <div class="ruler-label">SCALE 1:100</div>
     <div class="ruler-track" id="rulerTrack">
       <div class="ruler-tick" data-target="top" style="top:0%"><span>0.0</span></div>
-      <div class="ruler-tick" data-target="work" style="top:22%"><span>1.0 WORK</span></div>
-      <div class="ruler-tick" data-target="about" style="top:58%"><span>2.0 ABOUT</span></div>
-      <div class="ruler-tick" data-target="contact" style="top:88%"><span>3.0 CONTACT</span></div>
+      <div class="ruler-tick" data-target="work" style="top:20%"><span>1.0 WORK</span></div>
+      <div class="ruler-tick" data-target="photography" style="top:44%"><span>1.1 PHOTOGRAPHY</span></div>
+      <div class="ruler-tick" data-target="about" style="top:68%"><span>2.0 ABOUT</span></div>
+      <div class="ruler-tick" data-target="contact" style="top:90%"><span>3.0 CONTACT</span></div>
     </div>
   </div>
 
@@ -662,6 +765,7 @@
       <nav>
         <ul id="primaryNav">
           <li><a href="#work">A.01 WORK</a></li>
+          <li><a href="#photography">A.01.1 PHOTOGRAPHY</a></li>
           <li><a href="#about">A.02 ABOUT</a></li>
           <li><a href="#contact">A.03 CONTACT</a></li>
         </ul>
@@ -756,6 +860,35 @@
       </div>
     </section>
 
+    <!-- ================= PHOTOGRAPHY SLIDESHOW SECTION ================= -->
+    <section id="photography" class="photo-section">
+      <div class="wrap">
+        <div class="section-head reveal-up">
+          <div>
+            <div class="eyebrow">A.01.1 — PHOTOGRAPHY</div>
+            <h2>Photography</h2>
+          </div>
+          <div class="section-count">AUTO-ADVANCES — 4S PER PHOTO</div>
+        </div>
+
+        <!--
+          EDIT THIS LIST to add your photography. Scroll down to the
+          `photographyImages` array in the <script> block near the bottom of
+          the page — add one line per photo the same way, with an optional
+          caption. The slideshow will not start playing until this section
+          scrolls into view, and it pauses again if you scroll away.
+        -->
+        <div class="slideshow" id="photoSlideshow">
+          <div class="slideshow-counter" id="slideCounter">1 / 1</div>
+          <div id="slideTrack"></div>
+          <div class="slideshow-progress">
+            <div class="slideshow-progress-bar" id="slideProgressBar"></div>
+          </div>
+        </div>
+        <div class="slideshow-dots" id="slideDots"></div>
+      </div>
+    </section>
+
     <section id="about">
       <div class="wrap about-grid">
         <div class="portrait">
@@ -844,7 +977,7 @@
   }
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealEls = document.querySelectorAll('.sheet, .reveal-up, .portrait');
+  const revealEls = document.querySelectorAll('.sheet, .reveal-up, .portrait, .slideshow');
   if(reduceMotion){
     revealEls.forEach(s => s.classList.add('in-view'));
   } else if('IntersectionObserver' in window){
@@ -908,6 +1041,7 @@
   const sectionMap = {
     top: document.getElementById('top'),
     work: document.getElementById('work'),
+    photography: document.getElementById('photography'),
     about: document.getElementById('about'),
     contact: document.getElementById('contact')
   };
@@ -1049,6 +1183,147 @@
       if(e.key === 'ArrowLeft') step(-1);
       if(e.key === 'ArrowRight') step(1);
     });
+  })();
+
+  // ================= PHOTOGRAPHY SLIDESHOW =================
+  // EDIT THIS LIST to add your photography. Add one entry per photo with its
+  // filename (same folder as this HTML file, or a path/URL to the image) and
+  // an optional caption — leave caption as "" if you don't want one shown.
+  const photographyImages = [
+    { src: "_MG_3454.jpg", caption: "" },
+    { src: "_MG_3471.jpg", caption: "" },
+    { src: "_MG_3489.jpg", caption: "" },
+    { src: "_MG_3445.jpg", caption: "" },
+    { src: "_MG_3520.jpg", caption: "" },
+  ];
+
+  const SLIDE_DURATION_MS = 4000;
+
+  (function setupPhotographySlideshow(){
+    const section = document.getElementById('photography');
+    const shell = document.getElementById('photoSlideshow');
+    const track = document.getElementById('slideTrack');
+    const counter = document.getElementById('slideCounter');
+    const dotsWrap = document.getElementById('slideDots');
+    const progressBar = document.getElementById('slideProgressBar');
+    if(!section || !shell || !track) return;
+
+    if(!photographyImages.length){
+      shell.style.display = 'none';
+      return;
+    }
+
+    // Build slide + dot markup
+    photographyImages.forEach((item, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'slide' + (i === 0 ? ' active' : '');
+      slide.dataset.index = i;
+
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.caption || ('Photography ' + (i + 1));
+      img.loading = i === 0 ? 'eager' : 'lazy';
+      slide.appendChild(img);
+
+      if(item.caption){
+        const cap = document.createElement('div');
+        cap.className = 'slide-caption' + (i === 0 ? ' show' : '');
+        cap.textContent = item.caption;
+        slide.appendChild(cap);
+      }
+
+      track.appendChild(slide);
+
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', 'Go to photo ' + (i + 1));
+      if(i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goTo(i, true));
+      dotsWrap.appendChild(dot);
+    });
+
+    const slideEls = track.querySelectorAll('.slide');
+    const dotEls = dotsWrap.querySelectorAll('button');
+
+    let current = 0;
+    let timer = null;
+    let playing = false;
+
+    function updateCounter(){
+      if(counter) counter.textContent = (current + 1) + ' / ' + photographyImages.length;
+    }
+
+    function showSlide(index){
+      slideEls.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+        const cap = s.querySelector('.slide-caption');
+        if(cap) cap.classList.toggle('show', i === index);
+      });
+      dotEls.forEach((d, i) => d.classList.toggle('active', i === index));
+      updateCounter();
+    }
+
+    function restartProgress(){
+      if(!progressBar) return;
+      progressBar.classList.remove('animate');
+      // force reflow so the animation restarts cleanly
+      void progressBar.offsetWidth;
+      if(photographyImages.length > 1 && playing){
+        progressBar.classList.add('animate');
+      }
+    }
+
+    function goTo(index, userTriggered){
+      current = (index + photographyImages.length) % photographyImages.length;
+      showSlide(current);
+      if(userTriggered && playing){
+        // reset the auto-advance clock on manual navigation
+        clearInterval(timer);
+        timer = setInterval(advance, SLIDE_DURATION_MS);
+      }
+      restartProgress();
+    }
+
+    function advance(){
+      goTo(current + 1, false);
+    }
+
+    function play(){
+      if(playing || photographyImages.length < 2) return;
+      playing = true;
+      restartProgress();
+      timer = setInterval(advance, SLIDE_DURATION_MS);
+    }
+
+    function pause(){
+      playing = false;
+      clearInterval(timer);
+      timer = null;
+      if(progressBar) progressBar.classList.remove('animate');
+    }
+
+    // Slideshow only starts once the section actually scrolls into view,
+    // and pauses again if the user scrolls away from it.
+    if(reduceMotion){
+      // Respect reduced-motion preference: show first photo, no autoplay.
+      showSlide(0);
+    } else if('IntersectionObserver' in window){
+      const playIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            play();
+          } else {
+            pause();
+          }
+        });
+      }, { threshold: 0.4 });
+      playIO.observe(section);
+    } else {
+      // Fallback for very old browsers: just play immediately.
+      play();
+    }
+
+    showSlide(0);
   })();
 </script>
 </body>
